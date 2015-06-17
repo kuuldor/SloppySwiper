@@ -48,6 +48,7 @@
 - (void)commonInit
 {
     SSWDirectionalPanGestureRecognizer *panRecognizer = [[SSWDirectionalPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    panRecognizer.delegate = self;
     panRecognizer.direction = SSWPanDirectionRight;
     panRecognizer.maximumNumberOfTouches = 1;
     [_navigationController.view addGestureRecognizer:panRecognizer];
@@ -57,6 +58,11 @@
 }
 
 #pragma mark - UIPanGestureRecognizer
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return (self.navigationController.viewControllers.count > 1);
+}
 
 - (void)pan:(UIPanGestureRecognizer*)recognizer
 {
