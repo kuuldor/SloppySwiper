@@ -90,7 +90,7 @@ static float swipeThreshold = 80;
         // Cumulative translation.x can be less than zero because user can pan slightly to the right and then back to the left.
         CGFloat d = translation.x > 0 ? translation.x / CGRectGetWidth(view.bounds) : 0;
         [self.interactionController updateInteractiveTransition:d];
-    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+    } else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
         int offset = [recognizer translationInView:view].x / 1.5;
         int speed = [recognizer velocityInView:view].x / 50.0;
         
