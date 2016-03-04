@@ -21,6 +21,12 @@
 
 #pragma mark - Lifecycle
 
+static int swipeThreshold = 80;
+
++ (void) setThreshold : (int) threshold {
+    swipeThreshold = threshold;
+}
+
 - (void)dealloc
 {
     [_panRecognizer removeTarget:self action:@selector(pan:)];
@@ -66,6 +72,10 @@
 
 - (void)pan:(UIPanGestureRecognizer*)recognizer
 {
+    if (swipeThreshold <= 0) {
+        return;
+    }
+    
     UIView *view = self.navigationController.view;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         if (self.navigationController.viewControllers.count > 1 && !self.duringAnimation) {
@@ -80,7 +90,10 @@
         CGFloat d = translation.x > 0 ? translation.x / CGRectGetWidth(view.bounds) : 0;
         [self.interactionController updateInteractiveTransition:d];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        if ([recognizer velocityInView:view].x > 0) {
+        int offset = [recognizer translationInView:view].x;
+        int speed = [recognizer velocityInView:view].x / 50;
+        
+        if (offset + speed >= swipeThreshold) {
             [self.interactionController finishInteractiveTransition];
         } else {
             [self.interactionController cancelInteractiveTransition];
