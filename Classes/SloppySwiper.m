@@ -21,9 +21,9 @@
 
 #pragma mark - Lifecycle
 
-static int swipeThreshold = 80;
+static float swipeThreshold = 80;
 
-+ (void) setThreshold : (int) threshold {
++ (void) setThreshold : (float) threshold {
     swipeThreshold = threshold;
 }
 
@@ -90,8 +90,8 @@ static int swipeThreshold = 80;
         CGFloat d = translation.x > 0 ? translation.x / CGRectGetWidth(view.bounds) : 0;
         [self.interactionController updateInteractiveTransition:d];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        int offset = [recognizer translationInView:view].x;
-        int speed = [recognizer velocityInView:view].x / 50;
+        int offset = [recognizer translationInView:view].x / 1.5;
+        int speed = [recognizer velocityInView:view].x / 50.0;
         
         if (offset + speed >= swipeThreshold) {
             [self.interactionController finishInteractiveTransition];
