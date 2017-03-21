@@ -48,6 +48,7 @@ static float swipeThreshold = 80;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self commonInit];
 }
 
